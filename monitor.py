@@ -4,6 +4,49 @@ import json
 import requests
 from pathlib import Path
 
+from playwright.sync_api import sync_playwright
+
+URL = "https://x.com/oomotoya001"
+KEYWORD = "崩れ卵"
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        channel="chrome",
+        headless=False
+    )
+
+    page = browser.new_page(locale="ja-JP")
+
+    page.goto(
+        URL,
+        wait_until="domcontentloaded",
+        timeout=30000
+    )
+
+    input("投稿が表示されたらEnterを押してください...")
+
+    posts = page.locator("article")
+    count = min(posts.count(), 3)
+
+    print(f"\n取得した投稿数: {count}")
+
+    for i in range(count):
+        post = posts.nth(i)
+        text = post.inner_text()
+
+        print(f"\n===== 投稿 {i + 1} =====")
+        print(text[:1500])
+
+        if KEYWORD in text:
+            print("★ 崩れ卵を検出しました！")
+
+        links = post.locator('a[href*="/status/"]')
+
+        if links.count():
+            print("URL:", links.first.get_attribute("href"))
+
+    browser.close()
+
 KEYWORD = "崩れ卵"
 POSTS_FILE = Path("posts.json")
 STATE_FILE = Path("notified_posts.json")
