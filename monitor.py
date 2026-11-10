@@ -11,8 +11,7 @@ KEYWORD = "崩れ卵"
 
 with sync_playwright() as p:
     browser = p.chromium.launch(
-        channel="chrome",
-        headless=False
+        headless=True
     )
 
     page = browser.new_page(locale="ja-JP")
