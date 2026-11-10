@@ -30,6 +30,8 @@ jobs:
 
       - name: Install dependencies
         run: pip install requests
+             python -m pip install requests playwright
+             python -m playwright install --with-deps chromium
 
       - name: Check posts and notify
         env:
