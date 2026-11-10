@@ -34,6 +34,26 @@ jobs:
           python -m pip install requests playwright
           python -m playwright install --with-deps chromium
 
+      
+      - name: Diagnose Python environment
+        run: |
+          echo "Python executable:"
+          which python
+          python --version
+
+          echo "Playwright installation:"
+          python -m pip show playwright
+
+          echo "Import test:"
+          python -c "import playwright.sync_api; print('Playwright import OK')"
+
+          echo "Working directory:"
+          pwd
+
+          echo "Monitor file:"
+          ls -l monitor.py
+
+
       - name: Check posts and notify
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
