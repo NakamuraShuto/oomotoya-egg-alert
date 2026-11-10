@@ -21,6 +21,17 @@ with sync_playwright() as p:
         wait_until="domcontentloaded",
         timeout=30000
     )
+    
+    try:
+        page.locator("article").first.wait_for(
+            state="visible",
+            timeout=15000
+        )
+    except Exception:
+        print("投稿要素が表示されませんでした")
+        print("URL:", page.url)
+        print("タイトル:", page.title())
+        print("本文:", page.locator("body").inner_text()[:1000])
 
     posts = page.locator("article")
     count = min(posts.count(), 3)
