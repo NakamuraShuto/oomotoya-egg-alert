@@ -23,8 +23,6 @@ with sync_playwright() as p:
         timeout=30000
     )
 
-    input("投稿が表示されたらEnterを押してください...")
-
     posts = page.locator("article")
     count = min(posts.count(), 3)
 
